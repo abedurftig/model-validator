@@ -1,0 +1,18 @@
+{
+  "name": "model-validator",
+  "version": "0.0.1",
+  "authors": [
+    "Arne"
+  ],
+  "description": "A validator for a JavaScript model",
+  "main": "index.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {}
+}
