@@ -1,12 +1,12 @@
-describe('ModuleOne', function() {
+describe('ModuleOne', function () {
 
-  beforeEach(function() {
-    this.moduleOne = new ModuleOne();
+  beforeEach(function () {
+    //this.moduleOne = new ModuleOne();
   });
 
-  describe('should', function() {
+  describe('should', function () {
 
-    it('be defined', function() {
+    it('be defined', function () {
       expect(this.moduleOne).toBeDefined();
     });
 
