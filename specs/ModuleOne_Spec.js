@@ -1,7 +1,7 @@
 describe('ModuleOne', function () {
 
   beforeEach(function () {
-    //this.moduleOne = new ModuleOne();
+    this.moduleOne = new ModuleOne();
   });
 
   describe('should', function () {
