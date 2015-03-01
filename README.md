@@ -1,2 +1,2 @@
-# app-seed
-A seed for a JavaScript based web application
+# model-validator
+A validator for a JavaScript model
