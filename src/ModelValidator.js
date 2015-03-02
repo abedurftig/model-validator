@@ -47,7 +47,7 @@
 
     this.errors = [];
 
-    if (model === null || model === 'undefined') {
+    if (model === null || model === undefined) {
       throw "ModelValidator > model is undefined or null";
     }
 
@@ -69,8 +69,8 @@
     }
 
 		var i;
-    for (i = 0; i < this.validations.length; ++i) {
-      var validation = this.validations[i];
+    for (i in this.validations) {
+			var validation = this.validations[i];
       this.$verifyValidation(validation);
     }
 
