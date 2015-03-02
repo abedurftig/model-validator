@@ -1,4 +1,4 @@
-describe('ModuleOne', function () {
+describe('ModuleValidator', function () {
 	
   beforeEach(function () {
 		
@@ -11,7 +11,7 @@ describe('ModuleOne', function () {
       ]
     };
 		
-		this.validator = new ModelValidator([ firstNameDef ], function () {});
+		this.validator = new ModelValidator([ firstNameDef ]);
 		
   });
 
@@ -29,13 +29,13 @@ describe('ModuleOne', function () {
       expect(this.validator.validate).toBeDefined();
     });
 
-    it('of type function', function() {
+    it('be of type function', function() {
       expect(typeof this.validator.validate === 'function').toBe(true);
     });
 
     it('throw exception for null', function() {
 
-			var exception = undefined;
+			var exception;
 			try {
 				this.validator.validate(null);
 			} catch (e) {
@@ -46,9 +46,9 @@ describe('ModuleOne', function () {
 
     });
 
-		it('throw exception for undefined', function() {
+		it('throw exception for undefined', function () {
 
-			var exception = undefined;
+			var exception;
 			try {
 				this.validator.validate(undefined);
 			} catch (e) {
@@ -59,6 +59,48 @@ describe('ModuleOne', function () {
 
     });
 
-  });	
+  });
+	
+	describe('model validation, rule: required', function () {
+	
+		it('should fail when value undefined', function () {
+		
+			var model = {}, errors = this.validator.validate(model);
+			expect(errors.firstName).not.toBe(undefined);
+			expect(this.validator.isValid()).toBe(false);
+			
+		});
+
+		it('should fail when value empty', function () {
+		
+			var model = {
+				firstName: ''
+			}, errors = this.validator.validate(model);
+			expect(errors.firstName).not.toBe(undefined);
+			expect(this.validator.isValid()).toBe(false);
+			
+		});
+
+		it('should fail when value null', function () {
+		
+			var model = {
+				firstName: null
+			}, errors = this.validator.validate(model);
+			expect(errors.firstName).not.toBe(undefined);
+			expect(this.validator.isValid()).toBe(false);
+			
+		});
+		
+		it('should pass when value specified', function () {
+		
+			var model = {
+				firstName: "Peter"
+			}, errors = this.validator.validate(model);
+			expect(errors.firstName).toBe(undefined);
+			expect(this.validator.isValid()).toBe(true);
+			
+		});
+		
+	});
 	
 });
