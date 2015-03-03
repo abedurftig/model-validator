@@ -36,9 +36,15 @@ var validator = new ModelValidator([
 var person = {
   firstName: "Peter",
   lastName: "Parker"
-}
+};
 
 // run validation, the errors object has a property
 // which matches the name if the validation if the validation failed
 var errors = validator.validate(person);
 ```
+
+##### Rules
+
+Currently the following rules have been implemented:
+
+- required
