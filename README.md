@@ -1,4 +1,4 @@
-# model-validator 
+# model-validator
 
 [![Build Status](https://travis-ci.org/dasnervtdoch/model-validator.svg)](https://travis-ci.org/dasnervtdoch/model-validator)
 
@@ -51,6 +51,6 @@ var errors = validator.validate(person);
 
 Currently the following rules have been implemented:
 
-- required
-- min_length
-- max_length
+- `required`
+- `min_length`
+- `max_length`
