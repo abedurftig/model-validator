@@ -12,7 +12,7 @@ var firstNameValidation = {
 	name: "firstName",
 	rules: [
 		{
-			name : "required"
+			name: "required"
 		}
 	]
 };
@@ -21,7 +21,11 @@ var lastNameValidation = {
 	name: "lastName",
 	rules: [
 		{
-			name : "required"
+			name: "required"
+		},
+		{
+			name: "min_length",
+			param: 32
 		}
 	]
 };
@@ -48,3 +52,5 @@ var errors = validator.validate(person);
 Currently the following rules have been implemented:
 
 - required
+- min_length
+- max_length

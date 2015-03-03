@@ -2,9 +2,11 @@
 <html lang=en ng-app="DemoApp">
 	
 	<head>
+		
 		<meta charset=utf-8>
 		<title>model-validator demo</title>
 		<link rel="stylesheet" href="bootstrap.css">
+		
 		<style>
 		
 			.error {
@@ -12,7 +14,62 @@
 			}
 		
 		</style>
+		
+		<script src="angular.js"></script>
+		<script src="../src/model-validator.js"></script>
+		<script>
+
+			var app = angular.module("DemoApp", []);
+			app.controller('DemoCtrl', function($scope) {
+
+				var firstNameValidation = {
+					name: "firstName",
+					rules: [
+						{
+							name: "required"
+						}
+					]
+				};
+				
+				var lastNameValidation = {
+					name: "lastName",
+					rules: [
+						{
+							name: "required"
+						},
+						{
+							name: "min_length",
+							param: 4
+						},
+						{
+							name: "max_length",
+							param: 10
+						}
+					]
+				};
+				
+				var validator = new ModelValidator([ 
+					firstNameValidation,
+					lastNameValidation
+				]);
+				
+				$scope.errors = {};
+				
+				$scope.person = {
+					firstName: "Peter",
+					lastName: "Parker"
+				}
+				
+				$scope.validate = function() {
+					$scope.errors = validator.validate($scope.person);
+				}				
+
+			});
+
+		</script>
+		
 	</head>
+	
 	<body ng-controller="DemoCtrl">
 	
 		<div class="container-fluid">
@@ -52,51 +109,6 @@
 			</div>
 
 		</div>
-		
-		<script src="angular.js"></script>
-		<script src="../src/model-validator.js"></script>
-		<script>
-
-			var app = angular.module("DemoApp", []);
-			app.controller('DemoCtrl', function($scope) {
-
-				var firstNameValidation = {
-					name: "firstName",
-					rules: [
-						{
-							name : "required"
-						}
-					]
-				};
-				
-				var lastNameValidation = {
-					name: "lastName",
-					rules: [
-						{
-							name : "required"
-						}
-					]
-				};
-				
-				var validator = new ModelValidator([ 
-					firstNameValidation,
-					lastNameValidation
-				]);
-				
-				$scope.errors = {};
-				
-				$scope.person = {
-					firstName: "Peter",
-					lastName: "Parker"
-				}
-				
-				$scope.validate = function() {
-					$scope.errors = validator.validate($scope.person);
-				}				
-
-			});
-
-		</script>
 		
 	</body>
 	

@@ -102,5 +102,69 @@ describe('ModuleValidator', function () {
 		});
 		
 	});
+
+	describe('model validation, rule: min_length', function () {
+	
+		var firstNameDef = {
+      name: "firstName",
+      rules: [
+        {
+          name: "min_length",
+					param: 5
+        }
+      ]
+    };
+		
+		var validator = new ModelValidator([ firstNameDef ]);
+		
+		it('should fail when value length < 5', function () {
+		
+			var model = {firstName: 'John'}, errors = validator.validate(model);
+			expect(errors.firstName).not.toBe(undefined);
+			expect(validator.isValid()).toBe(false);
+			
+		});
+		
+		it('should pass when value length >= 5', function () {
+		
+			var model = {firstName: 'Peter'}, errors = validator.validate(model);
+			expect(errors.firstName).toBe(undefined);
+			expect(validator.isValid()).toBe(true);
+			
+		});
+		
+	});
+	
+	describe('model validation, rule: max_length', function () {
+	
+		var firstNameDef = {
+      name: "firstName",
+      rules: [
+        {
+          name: "max_length",
+					param: 5
+        }
+      ]
+    };
+		
+		var validator = new ModelValidator([ firstNameDef ]);
+		
+		it('should fail when value length > 5', function () {
+		
+			var model = {firstName: 'Papa John'}, errors = validator.validate(model);
+			expect(errors.firstName).not.toBe(undefined);
+			expect(validator.isValid()).toBe(false);
+			
+		});
+		
+		it('should pass when value length <= 5', function () {
+		
+			var model = {firstName: 'Peter'}, errors = validator.validate(model);
+			expect(errors.firstName).toBe(undefined);
+			expect(validator.isValid()).toBe(true);
+			
+		});
+		
+	});	
 	
 });
