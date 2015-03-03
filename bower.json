@@ -17,8 +17,7 @@
 		"specs",
 		"src",
 		"package.json",
-		"Gruntfile.js",
-		"bower.json"
+		"Gruntfile.js"
   ],
   "dependencies": {},
 	"devDependencies" : {}
