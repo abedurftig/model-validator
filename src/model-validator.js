@@ -1,7 +1,7 @@
 (function (window, document) {
 
 	'use strict';
-	
+
 	// http://rickharrison.github.com/validate.js
 	var ruleRegex = /^(.+?)\[(.+)\]$/,
 		numericRegex = /^[0-9]+$/,
@@ -17,10 +17,10 @@
 		base64Regex = /[^a-zA-Z0-9\/\+=]/i,
 		numericDashRegex = /^[\d\-\s]+$/,
 		urlRegex = /^((http|https):\/\/(\w+:{0,1}\w*@)?(\S+)|)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/;
-	
+
 	// http://rickharrison.github.com/validate.js
 	var defaults = {
-    messages: {
+		messages: {
 			required: 'The %s field is required.',
 			matches: 'The %s field does not match the %s field.',
 			valid_email: 'The %s field must contain a valid email address.',
@@ -44,37 +44,37 @@
 			is_file_type: 'The %s field must contain only %s files.',
 			valid_url: 'The %s field must contain a valid URL.'
 		}
-  };
-	
+	};
+
 	var ModelValidator = function (validations, callback) {
-	
+
 		this.validations = validations;
-    this.callback = callback;
-    this.fieldValidations = [];
+		this.callback = callback;
+		this.fieldValidations = [];
 		this.isModelValid = false;
-	
+
 		// make sure the validations make sense
 		this._verifyValidations();
-		
+
 		// setup field validation
 		this._setupFieldValidations();
-		
+
 	};
 
 	ModelValidator.prototype.isValid = function () {
 		return this.isModelValid;
 	};
-	
-  ModelValidator.prototype.validate = function (model) {
+
+	ModelValidator.prototype.validate = function (model) {
 
 		this.isModelValid = true;
-    var errors = {};
+		var errors = {};
 
 		// validate model object
-		
-    if (model === null || model === undefined) {
-      throw "ModelValidator > model is undefined or null";
-    }
+
+		if (model === null || model === undefined) {
+			throw "ModelValidator > model is undefined or null";
+		}
 
 		var keys = Object.keys(model);
 		if (keys.length === 0) {
@@ -82,104 +82,104 @@
 		}
 
 		// validate fields
-		
-		var i, j, fieldValidation, fieldValue, 
-				rule, hook, valid, message;
+
+		var i, j, fieldValidation, fieldValue,
+			rule, hook, valid, message;
 		for (i in this.fieldValidations) {
-			
+
 			fieldValidation = this.fieldValidations[i];
 			fieldValue = model[fieldValidation.name];
-			
+
 			for (j in fieldValidation.rules) {
-				
+
 				rule = fieldValidation.rules[j];
 				hook = this._hooks[rule.name];
-				
+
 				if (hook !== undefined) {
-					
+
 					valid = hook(fieldValue);
-					
+
 					if (!valid) {
-						
+
 						this.isModelValid = false;
 						message = defaults.messages[rule.name];
 						errors[fieldValidation.name] = message.replace('%s', fieldValidation.name);
-						
+
 					}
-					
+
 				}
-				
+
 			}
-			
+
 		}
-		
-    if (typeof this.callback === 'function') {
-      this.callback(errors);
-    } else {
+
+		if (typeof this.callback === 'function') {
+			this.callback(errors);
+		} else {
 			return errors;
 		}
 
-  };
-	
+	};
+
 	ModelValidator.prototype._verifyValidations = function () {
 
-    if (this.validations.length === 0) {
-      throw "ModelValidator > no validations";
-    }
+		if (this.validations.length === 0) {
+			throw "ModelValidator > no validations";
+		}
 
 		var i, validation;
-    for (i in this.validations) {
+		for (i in this.validations) {
 			validation = this.validations[i];
-      this._verifyValidation(validation);
-    }
+			this._verifyValidation(validation);
+		}
 
 	};
-	
-  ModelValidator.prototype._verifyValidation = function (validation) {
 
-    if (!validation.hasOwnProperty("name")) {
-      throw "ModelValidator > validation has no 'name' property";
-    }
+	ModelValidator.prototype._verifyValidation = function (validation) {
 
-    if (!validation.hasOwnProperty("rules") ||
-				typeof validation.rules !== 'object' ||
-        validation.rules.length === 0) {
+		if (!validation.hasOwnProperty("name")) {
+			throw "ModelValidator > validation has no 'name' property";
+		}
 
-      var name = validation.name;
-      throw "ModelValidator > validation with name '" + name + "' has no rules defined";
+		if (!validation.hasOwnProperty("rules") ||
+			typeof validation.rules !== 'object' ||
+			validation.rules.length === 0) {
 
-    }
+			var name = validation.name;
+			throw "ModelValidator > validation with name '" + name + "' has no rules defined";
 
-  };
-	
+		}
+
+	};
+
 	ModelValidator.prototype._setupFieldValidations = function () {
-	
+
 		var i;
-    for (i in this.validations) {
+		for (i in this.validations) {
 			var validation = this.validations[i];
-      this._setupFieldValidation(validation);
-    }
-		
+			this._setupFieldValidation(validation);
+		}
+
 	};
-	
+
 	ModelValidator.prototype._setupFieldValidation = function (validation) {
-	
+
 		this.fieldValidations[validation.name] = {
 			name: validation.name,
 			rules: validation.rules,
 			valid: false
 		};
-		
+
 	};
-	
+
 	ModelValidator.prototype._hooks = {
-  	
-		required: function(value) {
+
+		required: function (value) {
 			return (value !== null && value !== '' && value !== undefined);
 		}
-		
+
 	};
-	
+
 	window.ModelValidator = ModelValidator;
 
 }(window, document));
