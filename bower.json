@@ -5,8 +5,9 @@
     "Arne"
   ],
   "description": "A validator for a JavaScript model",
-  "main": "index.js",
+  "main": "dist/model-validator.js",
   "license": "MIT",
+	"private": false,
   "ignore": [
     "**/.*",
     "node_modules",
@@ -14,5 +15,6 @@
     "test",
     "tests"
   ],
-  "dependencies": {}
+  "dependencies": {},
+	"devDependencies" : {}
 }
