@@ -2,6 +2,7 @@
 <html lang=en ng-app="DemoApp">
 	
 	<head>
+		
 		<meta charset=utf-8>
 		<title>model-validator demo</title>
 		<link rel="stylesheet" href="bootstrap.css">
@@ -14,8 +15,8 @@
 		
 		</style>
 		
-		<script src="model-validator.js"></script>
 		<script src="angular.js"></script>
+		<script src="model-validator.js"></script>
 		<script>
 
 			var app = angular.module("DemoApp", []);
@@ -25,7 +26,7 @@
 					name: "firstName",
 					rules: [
 						{
-							name : "required"
+							name: "required"
 						}
 					]
 				};
@@ -34,7 +35,15 @@
 					name: "lastName",
 					rules: [
 						{
-							name : "required"
+							name: "required"
+						},
+						{
+							name: "min_length",
+							param: 4
+						},
+						{
+							name: "max_length",
+							param: 10
 						}
 					]
 				};
@@ -60,6 +69,7 @@
 		</script>
 		
 	</head>
+	
 	<body ng-controller="DemoCtrl">
 	
 		<div class="container-fluid">
