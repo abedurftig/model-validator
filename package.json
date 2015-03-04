@@ -6,7 +6,7 @@
   "scripts": {
     "test": "grunt build"
   },
-  "repository": "https://github.com/dasnervtdoch/model-validator",
+  "repository": "https://github.com/abedurftig/model-validator",
   "author": "Arne",
   "license": "MIT",
   "devDependencies": {
