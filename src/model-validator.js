@@ -90,24 +90,24 @@
 			fieldValidation = this.fieldValidations[i];
 			fieldValue = model[fieldValidation.name];
 			valid = true;
-			
+
 			for (j in fieldValidation.rules) {
 
 				rule = fieldValidation.rules[j];
 				param = rule.param;
 				hook = this._hooks[rule.name];
-				
+
 				// only testing the first rule per validation
 				if (hook !== undefined && valid) {
 
 					valid = hook(fieldValue, param);
-					
+
 					if (!valid) {
 
 						this.isModelValid = false;
 						message = defaults.messages[rule.name];
 						errors[fieldValidation.name] = message.replace('%s', fieldValidation.name)
-																									.replace('%s', param);
+							.replace('%s', param);
 
 					}
 
@@ -170,8 +170,8 @@
 
 		this.fieldValidations[validation.name] = {
 			name: validation.name,
-			rules: validation.rules//,
-			//valid: false
+			rules: validation.rules //,
+				//valid: false
 		};
 
 	};
@@ -181,11 +181,44 @@
 		required: function (value) {
 			return (value !== null && value !== '' && value !== undefined);
 		},
+
 		min_length: function (value, length) {
+
+			if (!numericRegex.test(length)) {
+				return false;
+			}
+
 			return (value !== null && value !== undefined && value.length >= length);
+
 		},
+
 		max_length: function (value, length) {
+
+			if (!numericRegex.test(length)) {
+				return false;
+			}
+
 			return (value !== null && value !== undefined && value.length <= length);
+
+		},
+
+		exact_length: function (value, length) {
+
+			if (!numericRegex.test(length)) {
+				return false;
+			}
+
+			return (value.length === length);
+
+		},
+
+		// TO DO: "email@com" should not be valid value
+		valid_email: function (value) {
+			return emailRegex.test(value);
+		},
+
+		valid_url: function (value) {
+			return (urlRegex.test(value));
 		}
 
 	};
