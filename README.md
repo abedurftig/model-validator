@@ -4,6 +4,15 @@
 
 A validator for a JavaScript model. For a really quick demo check: http://dasnervtdoch.github.io/model-validator/
 
+##### Installation
+
+You have two options. 
+
+- For the latest code download the source
+- Use bower: `bower install model-validator`
+
+Make sure to include the `model-validator.js` file in your HTML.
+
 ##### Get started
 
 ```js
