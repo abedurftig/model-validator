@@ -85,7 +85,7 @@
 		// validate fields
 
 		var i, j, fieldValidation, fieldValue,
-			rule, param, hook, valid, message;
+			rule, param, hook, valid, message, display;
 		for (i in this.fieldValidations) {
 
 			fieldValidation = this.fieldValidations[i];
@@ -105,9 +105,11 @@
 
 					if (!valid) {
 
+						display = fieldValidation.displayName || fieldValidation.name
+						
 						this.isModelValid = false;
 						message = defaults.messages[rule.name];
-						errors[fieldValidation.name] = message.replace('%s', fieldValidation.name)
+						errors[fieldValidation.name] = message.replace('%s', display)
 							.replace('%s', param);
 
 					}
@@ -171,6 +173,7 @@
 
 		this.fieldValidations[validation.name] = {
 			name: validation.name,
+			displayName: validation.displayName,
 			rules: validation.rules //,
 				//valid: false
 		};
