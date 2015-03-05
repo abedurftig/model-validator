@@ -66,6 +66,7 @@ Currently the following rules have been implemented:
 - `min_length`
 - `max_length`
 - `exact_length`
+- `matches`
 - `valid_email`
 - `valid_url`
 
