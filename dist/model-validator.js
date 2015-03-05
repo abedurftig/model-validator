@@ -18,7 +18,8 @@
 		ipRegex = /^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})$/i,
 		base64Regex = /[^a-zA-Z0-9\/\+=]/i,
 		numericDashRegex = /^[\d\-\s]+$/,
-		urlRegex = /^((http|https):\/\/(\w+:{0,1}\w*@)?(\S+)|)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/;
+		//urlRegex = /^((http|https):\/\/(\w+:{0,1}\w*@)?(\S+)|)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/;
+		urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
 
 	// http://rickharrison.github.com/validate.js
 	var defaults = {
@@ -54,6 +55,7 @@
 		this.callback = callback;
 		this.fieldValidations = [];
 		this.isModelValid = false;
+		this.model = {};
 
 		// make sure the validations make sense
 		this._verifyValidations();
@@ -70,6 +72,8 @@
 	ModelValidator.prototype.validate = function (model) {
 
 		this.isModelValid = true;
+		this.model = model;
+
 		var errors = {};
 
 		// validate model object
@@ -86,7 +90,7 @@
 		// validate fields
 
 		var i, j, fieldValidation, fieldValue,
-			rule, param, hook, valid, message;
+			rule, param, hook, valid, message, display;
 		for (i in this.fieldValidations) {
 
 			fieldValidation = this.fieldValidations[i];
@@ -102,13 +106,15 @@
 				// only testing the first rule per validation
 				if (hook !== undefined && valid) {
 
-					valid = hook(fieldValue, param);
+					valid = hook.apply(this, [fieldValue, param]);
 
 					if (!valid) {
 
+						display = fieldValidation.displayName || fieldValidation.name
+
 						this.isModelValid = false;
 						message = defaults.messages[rule.name];
-						errors[fieldValidation.name] = message.replace('%s', fieldValidation.name)
+						errors[fieldValidation.name] = message.replace('%s', display)
 							.replace('%s', param);
 
 					}
@@ -172,6 +178,7 @@
 
 		this.fieldValidations[validation.name] = {
 			name: validation.name,
+			displayName: validation.displayName,
 			rules: validation.rules //,
 				//valid: false
 		};
@@ -220,6 +227,18 @@
 
 		valid_url: function (value) {
 			return (urlRegex.test(value));
+		},
+
+		matches: function (value, other) {
+
+			var otherValue = this.model[other];
+
+			if (otherValue) {
+				return value === otherValue;
+			}
+
+			return false;
+
 		}
 
 	};
@@ -227,3 +246,10 @@
 	window.ModelValidator = ModelValidator;
 
 }(window, document));
+
+/*
+ * Export as a CommonJS module
+ */
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = ModelValidator;
+}
