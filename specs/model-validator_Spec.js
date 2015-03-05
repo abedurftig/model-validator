@@ -232,52 +232,63 @@ describe('ModuleValidator', function () {
 
 	});
 
-//	describe('model validation, rule: valid_email', function () {
-//
-//		var emailDef = {
-//			name: "email",
-//			rules: [
-//				{
-//					name: "valid_email"
-//        }
-//      ]
-//		};
-//
-//		var validator = new ModelValidator([emailDef]);
-//
-//		it('should fail when value is "email@com"', function () {
-//
-//			var model = {
-//					email: 'email@com'
-//				},
-//				errors = validator.validate(model);
-//			expect(errors.email).not.toBe(undefined);
-//			expect(validator.isValid()).toBe(false);
-//
-//		});
-//
-//		it('should fail when value is "email.com"', function () {
-//
-//			var model = {
-//					email: 'email.com'
-//				},
-//				errors = validator.validate(model);
-//			expect(errors.email).not.toBe(undefined);
-//			expect(validator.isValid()).toBe(false);
-//
-//		});
-//
-//		it('should pass when value  is "email@valid.com"', function () {
-//
-//			var model = {
-//					email: 'email@valid.com'
-//				},
-//				errors = validator.validate(model);
-//			expect(errors.email).toBe(undefined);
-//			expect(validator.isValid()).toBe(true);
-//
-//		});
-//
-//	});
+	describe('model validation, rule: valid_email', function () {
+
+		var emailDef = {
+			name: "email",
+			rules: [
+				{
+					name: "valid_email"
+        }
+      ]
+		};
+
+		var validator = new ModelValidator([emailDef]);
+
+		it('should fail when value is "email@com"', function () {
+
+			var model = {
+					email: 'email@com'
+				},
+				errors = validator.validate(model);
+			expect(errors.email).not.toBe(undefined);
+			expect(validator.isValid()).toBe(false);
+
+		});
+
+		it('should fail when value is "email.com"', function () {
+
+			var model = {
+					email: 'email.com'
+				},
+				errors = validator.validate(model);
+			expect(errors.email).not.toBe(undefined);
+			expect(validator.isValid()).toBe(false);
+
+		});
+
+		it('should fail when value is "@email.com"', function () {
+
+			var model = {
+					email: '@email.com'
+				},
+				errors = validator.validate(model);
+			expect(errors.email).not.toBe(undefined);
+			expect(validator.isValid()).toBe(false);
+
+		});
+		
+		it('should pass when value is "email@valid.com"', function () {
+
+			var model = {
+					email: 'email@valid.com'
+				},
+				errors = validator.validate(model);
+			expect(errors.email).toBe(undefined);
+			expect(validator.isValid()).toBe(true);
+
+		});
+
+	});
 
 });

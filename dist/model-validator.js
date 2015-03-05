@@ -1,4 +1,4 @@
-/*! model-validator - v0.0.2 - 2015-03-04 */
+/*! model-validator - v0.0.2 - 2015-03-05 */
 (function (window, document) {
 
 	'use strict';
@@ -8,7 +8,8 @@
 		numericRegex = /^[0-9]+$/,
 		integerRegex = /^\-?[0-9]+$/,
 		decimalRegex = /^\-?[0-9]*\.?[0-9]+$/,
-		emailRegex = /^[a-zA-Z0-9.!#$%&amp;'*+\-\/=?\^_`{|}~\-]+@[a-zA-Z0-9\-]+(?:\.[a-zA-Z0-9\-]+)*$/,
+		//emailRegex = /^[a-zA-Z0-9.!#$%&amp;'*+\-\/=?\^_`{|}~\-]+@[a-zA-Z0-9\-]+(?:\.[a-zA-Z0-9\-]+)*$/,
+		emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
 		alphaRegex = /^[a-z]+$/i,
 		alphaNumericRegex = /^[a-z0-9]+$/i,
 		alphaDashRegex = /^[a-z0-9_\-]+$/i,
@@ -213,7 +214,6 @@
 
 		},
 
-		// TO DO: "email@com" should not be valid value
 		valid_email: function (value) {
 			return emailRegex.test(value);
 		},
