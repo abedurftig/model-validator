@@ -2,7 +2,9 @@
 
 [![Build Status](https://travis-ci.org/abedurftig/model-validator.svg?branch=master)](https://travis-ci.org/abedurftig/model-validator)
 
-A validator for a JavaScript model. For a really quick demo check: http://abedurftig.github.io/model-validator/
+A validator for a JavaScript model. The difference to libraries like `validate.js` is that is that this library validates a JavaScript object rather than a HTML form, which makes the more flexible to use.
+<br/><br/>
+For a really quick demo check: http://abedurftig.github.io/model-validator
 
 ##### Installation
 
