@@ -7,7 +7,7 @@
 		numericRegex = /^[0-9]+$/,
 		integerRegex = /^\-?[0-9]+$/,
 		decimalRegex = /^\-?[0-9]*\.?[0-9]+$/,
-		emailRegex = /^[a-zA-Z0-9.!#$%&amp;'*+\-\/=?\^_`{|}~\-]+@[a-zA-Z0-9\-]+(?:\.[a-zA-Z0-9\-]+)*$/,
+		emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
 		alphaRegex = /^[a-z]+$/i,
 		alphaNumericRegex = /^[a-z0-9]+$/i,
 		alphaDashRegex = /^[a-z0-9_\-]+$/i,
@@ -16,7 +16,7 @@
 		ipRegex = /^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})$/i,
 		base64Regex = /[^a-zA-Z0-9\/\+=]/i,
 		numericDashRegex = /^[\d\-\s]+$/,
-		urlRegex = /^((http|https):\/\/(\w+:{0,1}\w*@)?(\S+)|)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/;
+		urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
 
 	// http://rickharrison.github.com/validate.js
 	var defaults = {
@@ -52,6 +52,7 @@
 		this.callback = callback;
 		this.fieldValidations = [];
 		this.isModelValid = false;
+		this.model = {};
 
 		// make sure the validations make sense
 		this._verifyValidations();
@@ -68,7 +69,11 @@
 	ModelValidator.prototype.validate = function (model) {
 
 		this.isModelValid = true;
-		var errors = {};
+		this.model = model;
+
+		var errors = {
+			messages: []
+		};
 
 		// validate model object
 
@@ -84,30 +89,32 @@
 		// validate fields
 
 		var i, j, fieldValidation, fieldValue,
-			rule, param, hook, valid, message;
+			rule, param, hook, valid, message, display;
 		for (i in this.fieldValidations) {
 
 			fieldValidation = this.fieldValidations[i];
 			fieldValue = model[fieldValidation.name];
 			valid = true;
-			
+
 			for (j in fieldValidation.rules) {
 
 				rule = fieldValidation.rules[j];
 				param = rule.param;
 				hook = this._hooks[rule.name];
-				
+
 				// only testing the first rule per validation
 				if (hook !== undefined && valid) {
 
-					valid = hook(fieldValue, param);
-					
+					valid = hook.apply(this, [fieldValue, param]);
+
 					if (!valid) {
 
+						display = fieldValidation.displayName || fieldValidation.name
+
 						this.isModelValid = false;
-						message = defaults.messages[rule.name];
-						errors[fieldValidation.name] = message.replace('%s', fieldValidation.name)
-																									.replace('%s', param);
+						message = defaults.messages[rule.name].replace('%s', display).replace('%s', param);
+						errors[fieldValidation.name] = message;
+						errors.messages.push(message);
 
 					}
 
@@ -170,8 +177,8 @@
 
 		this.fieldValidations[validation.name] = {
 			name: validation.name,
-			rules: validation.rules//,
-			//valid: false
+			displayName: validation.displayName,
+			rules: validation.rules
 		};
 
 	};
@@ -181,11 +188,55 @@
 		required: function (value) {
 			return (value !== null && value !== '' && value !== undefined);
 		},
+
 		min_length: function (value, length) {
+
+			if (!numericRegex.test(length)) {
+				return false;
+			}
+
 			return (value !== null && value !== undefined && value.length >= length);
+
 		},
+
 		max_length: function (value, length) {
+
+			if (!numericRegex.test(length)) {
+				return false;
+			}
+
 			return (value !== null && value !== undefined && value.length <= length);
+
+		},
+
+		exact_length: function (value, length) {
+
+			if (!numericRegex.test(length)) {
+				return false;
+			}
+
+			return (value.length === length);
+
+		},
+
+		valid_email: function (value) {
+			return emailRegex.test(value);
+		},
+
+		valid_url: function (value) {
+			return (urlRegex.test(value));
+		},
+
+		matches: function (value, other) {
+
+			var otherValue = this.model[other];
+
+			if (otherValue) {
+				return value === otherValue;
+			}
+
+			return false;
+
 		}
 
 	};
@@ -193,3 +244,10 @@
 	window.ModelValidator = ModelValidator;
 
 }(window, document));
+
+/*
+ * Export as a CommonJS module
+ */
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = ModelValidator;
+}
