@@ -63,3 +63,7 @@ Currently the following rules have been implemented:
 - `required`
 - `min_length`
 - `max_length`
+
+##### Credits
+
+To Rick Harrison and the contributors of the validate.js repository (https://github.com/rickharrison/validate.js)
