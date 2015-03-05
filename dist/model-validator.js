@@ -8,7 +8,6 @@
 		numericRegex = /^[0-9]+$/,
 		integerRegex = /^\-?[0-9]+$/,
 		decimalRegex = /^\-?[0-9]*\.?[0-9]+$/,
-		//emailRegex = /^[a-zA-Z0-9.!#$%&amp;'*+\-\/=?\^_`{|}~\-]+@[a-zA-Z0-9\-]+(?:\.[a-zA-Z0-9\-]+)*$/,
 		emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
 		alphaRegex = /^[a-z]+$/i,
 		alphaNumericRegex = /^[a-z0-9]+$/i,
@@ -18,7 +17,6 @@
 		ipRegex = /^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})$/i,
 		base64Regex = /[^a-zA-Z0-9\/\+=]/i,
 		numericDashRegex = /^[\d\-\s]+$/,
-		//urlRegex = /^((http|https):\/\/(\w+:{0,1}\w*@)?(\S+)|)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/;
 		urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
 
 	// http://rickharrison.github.com/validate.js
@@ -74,7 +72,9 @@
 		this.isModelValid = true;
 		this.model = model;
 
-		var errors = {};
+		var errors = {
+			messages: []
+		};
 
 		// validate model object
 
@@ -97,11 +97,20 @@
 			fieldValue = model[fieldValidation.name];
 			valid = true;
 
+			var isRequired = fieldValidation.rules.filter(function (rule) {
+				return rule.name === 'required'
+			})[0];
+			var isEmpty = (!fieldValue || fieldValue === '' || fieldValue === undefined);
+
 			for (j in fieldValidation.rules) {
 
 				rule = fieldValidation.rules[j];
 				param = rule.param;
 				hook = this._hooks[rule.name];
+
+				if (!isRequired && isEmpty) {
+					continue;
+				}
 
 				// only testing the first rule per validation
 				if (hook !== undefined && valid) {
@@ -111,11 +120,11 @@
 					if (!valid) {
 
 						display = fieldValidation.displayName || fieldValidation.name
+						message = defaults.messages[rule.name].replace('%s', display).replace('%s', param);
+						errors[fieldValidation.name] = message;
+						errors.messages.push(message);
 
 						this.isModelValid = false;
-						message = defaults.messages[rule.name];
-						errors[fieldValidation.name] = message.replace('%s', display)
-							.replace('%s', param);
 
 					}
 
@@ -179,8 +188,7 @@
 		this.fieldValidations[validation.name] = {
 			name: validation.name,
 			displayName: validation.displayName,
-			rules: validation.rules //,
-				//valid: false
+			rules: validation.rules
 		};
 
 	};

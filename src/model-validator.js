@@ -89,18 +89,27 @@
 		// validate fields
 
 		var i, j, fieldValidation, fieldValue,
-			rule, param, hook, valid, message, display;
+			rule, param, hook, valid, message, display,
+			isEmpty, isRequired;
 		for (i in this.fieldValidations) {
 
 			fieldValidation = this.fieldValidations[i];
 			fieldValue = model[fieldValidation.name];
 			valid = true;
+			isEmpty = (!fieldValue || fieldValue === '' || fieldValue === undefined);
+			isRequired = fieldValidation.rules.filter(function (rule) {
+				return rule.name === 'required'
+			})[0];
 
 			for (j in fieldValidation.rules) {
 
 				rule = fieldValidation.rules[j];
 				param = rule.param;
 				hook = this._hooks[rule.name];
+
+				if (!isRequired && isEmpty) {
+					continue;
+				}
 
 				// only testing the first rule per validation
 				if (hook !== undefined && valid) {
@@ -110,11 +119,11 @@
 					if (!valid) {
 
 						display = fieldValidation.displayName || fieldValidation.name
-
-						this.isModelValid = false;
 						message = defaults.messages[rule.name].replace('%s', display).replace('%s', param);
 						errors[fieldValidation.name] = message;
 						errors.messages.push(message);
+
+						this.isModelValid = false;
 
 					}
 
