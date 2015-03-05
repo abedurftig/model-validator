@@ -287,8 +287,8 @@ describe('ModuleValidator', function () {
 			expect(errors.email).not.toBe(undefined);
 			expect(validator.isValid()).toBe(false);
 
-		});		
-		
+		});
+
 		it('should pass when value is "email@valid.com"', function () {
 
 			var model = {
@@ -296,6 +296,160 @@ describe('ModuleValidator', function () {
 				},
 				errors = validator.validate(model);
 			expect(errors.email).toBe(undefined);
+			expect(validator.isValid()).toBe(true);
+
+		});
+
+	});
+
+	describe('model validation, rule: valid_url', function () {
+
+		var urlDef = {
+			name: "url",
+			rules: [
+				{
+					name: "valid_url"
+        }
+      ]
+		};
+
+		var validator = new ModelValidator([urlDef]);
+
+		it('should fail when value is "homepage.com"', function () {
+
+			var model = {
+					url: 'homepage.com'
+				},
+				errors = validator.validate(model);
+			expect(errors.url).not.toBe(undefined);
+			expect(validator.isValid()).toBe(false);
+
+		});
+
+		it('should fail when value is "www@homepage.com"', function () {
+
+			var model = {
+					url: 'www@homepage.com'
+				},
+				errors = validator.validate(model);
+			expect(errors.url).not.toBe(undefined);
+			expect(validator.isValid()).toBe(false);
+
+		});
+
+		it('should fail when value is "http:/homepage.com"', function () {
+
+			var model = {
+					url: 'http:/homepage.com'
+				},
+				errors = validator.validate(model);
+			expect(errors.url).not.toBe(undefined);
+			expect(validator.isValid()).toBe(false);
+
+		});
+
+		it('should fail when value is "http://homepagecom"', function () {
+
+			var model = {
+					url: 'http://homepagecom'
+				},
+				errors = validator.validate(model);
+			expect(errors.url).not.toBe(undefined);
+			expect(validator.isValid()).toBe(false);
+
+		});
+
+		it('should pass when value is "http://homepage.com"', function () {
+
+			var model = {
+					url: 'http://homepage.com'
+				},
+				errors = validator.validate(model);
+			expect(errors.url).toBe(undefined);
+			expect(validator.isValid()).toBe(true);
+
+		});
+
+		it('should pass when value is "http://homepage.co.uk"', function () {
+
+			var model = {
+					url: 'http://homepage.co.uk'
+				},
+				errors = validator.validate(model);
+			expect(errors.url).toBe(undefined);
+			expect(validator.isValid()).toBe(true);
+
+		});
+
+		it('should pass when value is "http://www.homepage.co.uk"', function () {
+
+			var model = {
+					url: 'http://www.homepage.co.uk'
+				},
+				errors = validator.validate(model);
+			expect(errors.url).toBe(undefined);
+			expect(validator.isValid()).toBe(true);
+
+		});
+
+		it('should pass when value is "https://www.homepage.co.uk"', function () {
+
+			var model = {
+					url: 'https://www.homepage.co.uk'
+				},
+				errors = validator.validate(model);
+			expect(errors.url).toBe(undefined);
+			expect(validator.isValid()).toBe(true);
+
+		});
+
+	});
+
+	describe('model validation, rule: matches', function () {
+
+		var passwordRepeatDef = {
+			name: "password_repeat",
+			rules: [
+				{
+					name: "matches",
+					param: "password"
+				}
+      ]
+		};
+
+		var validator = new ModelValidator([passwordRepeatDef]);
+
+		it('should fail when values do not match', function () {
+
+			var model = {
+					password: 'password',
+					password_repeat: 'password_repeat'
+				},
+				errors = validator.validate(model);
+			expect(errors.password_repeat).not.toBe(undefined);
+			expect(validator.isValid()).toBe(false);
+
+		});
+
+		it('should fail when match value is undefined', function () {
+
+			var model = {
+					password_repeat: 'password_repeat'
+				},
+				errors = validator.validate(model);
+			expect(errors.password_repeat).not.toBe(undefined);
+			expect(validator.isValid()).toBe(false);
+
+		});
+
+		it('should pass when values match', function () {
+
+			var model = {
+					password: 'password',
+					password_repeat: 'password'
+				},
+				errors = validator.validate(model);
+			expect(errors.password_repeat).toBe(undefined);
 			expect(validator.isValid()).toBe(true);
 
 		});
