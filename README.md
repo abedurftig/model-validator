@@ -65,6 +65,9 @@ Currently the following rules have been implemented:
 - `required`
 - `min_length`
 - `max_length`
+- `exact_length`
+- `valid_email`
+- `valid_url`
 
 ##### Credits
 
