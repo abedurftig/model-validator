@@ -106,10 +106,15 @@
 			<div class="col-md-2 col-lg-3"></div>
 			<div class="col-md-8 col-lg-6">
 
-				<h2>Person Form</h2>
+				<h3>model-validator</h3>
 
-				<p ng-show="errors.messages.length > 0">This form has {{errors.messages.length}} validation issues. Plese review your inputs.</p>
+				<p>This is a quick demo of the model-validator JavaScript library. This library provides validation functionality for a JavaScript object rather than a HTML form. Check out the <a href="https://github.com/abedurftig/model-validator" target="_blank">GitHub</a> repository!</p>
 
+				<hr>
+
+				<h4>Person Form</h4>
+
+				<p ng-show="errors.messages.length > 0">This form has {{errors.messages.length}} validation issues. Please review your inputs.</p>
 
 				<form>
 
@@ -133,13 +138,15 @@
 						<p class="error" ng-show="errors.password_repeat">{{errors.password_repeat}}</p>
 					</div>
 
-					<button class="btn btn-primary" ng-click="validate()">Validate</button>
+					<button class="btn btn-primary btn-sm" ng-click="validate()">Validate</button>
 
 				</form>
 
 				<hr/>
-				<p>The <em><b>$scope.errors</b></em> object:</p>
+				<p>The <em><b>ModelValidator.validate(model)</b></em> function returns an <em>errors</em> object:</p>
 				<pre>{{ errors | json }}</pre>
+
+				<p>This quick demo was build with <a href="https://angularjs.org">angularjs</a>.</p>
 
 			</div>
 			<div class="col-md-2 col-lg-3"></div>
