@@ -277,6 +277,17 @@ describe('ModuleValidator', function () {
 			expect(validator.isValid()).toBe(false);
 
 		});
+
+		it('should fail when value is "test email@email.com"', function () {
+
+			var model = {
+					email: 'test email@email.com'
+				},
+				errors = validator.validate(model);
+			expect(errors.email).not.toBe(undefined);
+			expect(validator.isValid()).toBe(false);
+
+		});		
 		
 		it('should pass when value is "email@valid.com"', function () {
 
