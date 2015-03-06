@@ -1,14 +1,14 @@
 {
-  "name": "model-validator",
-  "version": "0.0.2",
-  "authors": [
-    "Arne"
-  ],
-  "description": "A validator for a JavaScript model",
-  "main": "dist/model-validator.js",
-  "license": "MIT",
+	"name": "model-validator",
+	"version": "0.0.3",
+	"authors": [
+    	"Arne"
+	],
+	"description": "A validator for a JavaScript model",
+	"main": "dist/model-validator.js",
+	"license": "MIT",
 	"private": false,
-  "ignore": [
+	"ignore": [
 		"**/.*",
 		"node_modules",
 		"bower_components",
@@ -18,7 +18,7 @@
 		"src",
 		"package.json",
 		"Gruntfile.js"
-  ],
-  "dependencies": {},
-	"devDependencies" : {}
+	],
+	"dependencies": {},
+	"devDependencies": {}
 }

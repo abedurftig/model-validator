@@ -1,4 +1,4 @@
-/*! model-validator - v0.0.2 - 2015-03-05 */
+/*! model-validator - v0.0.3 - 2015-03-06 */
 (function (window, document) {
 
 	'use strict';
@@ -43,7 +43,8 @@
 			valid_base64: 'The %s field must contain a base64 string.',
 			valid_credit_card: 'The %s field must contain a valid credit card number.',
 			is_file_type: 'The %s field must contain only %s files.',
-			valid_url: 'The %s field must contain a valid URL.'
+			valid_url: 'The %s field must contain a valid URL.',
+			array_min_length: 'The list of %s should at least contain %s item(s)'
 		}
 	};
 
@@ -90,17 +91,17 @@
 		// validate fields
 
 		var i, j, fieldValidation, fieldValue,
-			rule, param, hook, valid, message, display;
+			rule, param, hook, valid, message, display,
+			isEmpty, isRequired;
 		for (i in this.fieldValidations) {
 
 			fieldValidation = this.fieldValidations[i];
 			fieldValue = model[fieldValidation.name];
 			valid = true;
-
-			var isRequired = fieldValidation.rules.filter(function (rule) {
+			isEmpty = (!fieldValue || fieldValue === '' || fieldValue === undefined);
+			isRequired = fieldValidation.rules.filter(function (rule) {
 				return rule.name === 'required'
 			})[0];
-			var isEmpty = (!fieldValue || fieldValue === '' || fieldValue === undefined);
 
 			for (j in fieldValidation.rules) {
 
@@ -246,6 +247,16 @@
 			}
 
 			return false;
+
+		},
+
+		array_min_length: function (value, length) {
+
+			if (typeof value !== 'object') {
+				return false;
+			}
+
+			return value.length >= length;
 
 		}
 

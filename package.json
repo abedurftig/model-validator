@@ -1,6 +1,6 @@
 {
   "name": "model-validator",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A validator for a JavaScript model",
   "main": "index.js",
   "scripts": {
