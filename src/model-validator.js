@@ -42,7 +42,8 @@
 			valid_base64: 'The %s field must contain a base64 string.',
 			valid_credit_card: 'The %s field must contain a valid credit card number.',
 			is_file_type: 'The %s field must contain only %s files.',
-			valid_url: 'The %s field must contain a valid URL.'
+			valid_url: 'The %s field must contain a valid URL.',
+			array_min_length: 'The list of %s should at least contain %s item(s)'
 		}
 	};
 
@@ -245,6 +246,16 @@
 			}
 
 			return false;
+
+		},
+
+		array_min_length: function (value, length) {
+
+			if (typeof value !== 'object') {
+				return false;
+			}
+
+			return value.length >= length;
 
 		}
 

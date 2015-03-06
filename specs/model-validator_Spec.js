@@ -7,8 +7,8 @@ describe('ModuleValidator', function () {
 			rules: [
 				{
 					name: "required"
-        }
-      ]
+        		}
+      		]
 		};
 
 		this.validator = new ModelValidator([firstNameDef]);
@@ -115,8 +115,8 @@ describe('ModuleValidator', function () {
 				{
 					name: "min_length",
 					param: 5
-        }
-      ]
+        		}
+      		]
 		};
 
 		var validator = new ModelValidator([firstNameDef]);
@@ -153,8 +153,8 @@ describe('ModuleValidator', function () {
 				{
 					name: "max_length",
 					param: 5
-        }
-      ]
+        		}
+      		]
 		};
 
 		var validator = new ModelValidator([firstNameDef]);
@@ -191,8 +191,8 @@ describe('ModuleValidator', function () {
 				{
 					name: "exact_length",
 					param: 10
-        }
-      ]
+        		}
+      		]
 		};
 
 		var validator = new ModelValidator([tencharactersDef]);
@@ -239,8 +239,8 @@ describe('ModuleValidator', function () {
 			rules: [
 				{
 					name: "valid_email"
-        }
-      ]
+        		}
+      		]
 		};
 
 		var validator = new ModelValidator([emailDef]);
@@ -309,8 +309,8 @@ describe('ModuleValidator', function () {
 			rules: [
 				{
 					name: "valid_url"
-        }
-      ]
+        		}
+      		]
 		};
 
 		var validator = new ModelValidator([urlDef]);
@@ -414,7 +414,7 @@ describe('ModuleValidator', function () {
 					name: "matches",
 					param: "password"
 				}
-      ]
+			]
 		};
 
 		var validator = new ModelValidator([passwordRepeatDef]);
@@ -450,6 +450,57 @@ describe('ModuleValidator', function () {
 				},
 				errors = validator.validate(model);
 			expect(errors.password_repeat).toBe(undefined);
+			expect(validator.isValid()).toBe(true);
+
+		});
+
+	});
+
+	describe('model validation, rule: array_min_length', function () {
+
+		var arrayDef = {
+			name: "items",
+			rules: [
+				{
+					name: "array_min_length",
+					param: 1
+        		}
+      		]
+		};
+
+		var validator = new ModelValidator([arrayDef]);
+
+		it('should fail when value is not of type object', function () {
+
+			var model = {
+					items: 'Papa John'
+				},
+				errors = validator.validate(model);
+			expect(errors.items).not.toBe(undefined);
+			expect(validator.isValid()).toBe(false);
+
+		});
+
+		it('should fail when array is empty', function () {
+
+			var model = {
+					items: []
+				},
+				errors = validator.validate(model);
+			expect(errors.items).not.toBe(undefined);
+			expect(validator.isValid()).toBe(false);
+
+		});
+
+		it('should pass when array is not empty', function () {
+
+			var model = {
+					items: [{
+						name: 'itemA'
+					}]
+				},
+				errors = validator.validate(model);
+			expect(errors.items).toBe(undefined);
 			expect(validator.isValid()).toBe(true);
 
 		});
