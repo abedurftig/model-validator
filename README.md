@@ -69,7 +69,8 @@ Currently the following rules have been implemented:
 - `matches`
 - `valid_email`
 - `valid_url`
+- `array_min_length`
 
 ##### Credits
 
-To Rick Harrison and the contributors of the validate.js repository (https://github.com/rickharrison/validate.js)
+To Rick Harrison and the contributors of the validate.js repository - https://github.com/rickharrison/validate.js
